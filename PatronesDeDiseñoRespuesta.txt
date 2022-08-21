@@ -1,0 +1,131 @@
+Identifica las características principales de los patrones de diseño más conocidos, indica para qué valen y un caso de uso para cada uno de ellos.
+
+Singleton.
+Cuando no queremos crear mas de una instancia de una misma clase.
+
+Ej -> Game.run();
+      Game2.run(); ....... Esto no se podria hacer porque Game de arriba ya se está ejecutando.
+
+Factory.
+Sirve para construir una jerarquia de clase. Dependiendo como se llame, devuelve una cosa u otra.
+
+Ej -> FactoryCrypto("btc") -> Esto devolveria el precio del bitcoin
+      FactoryCrypto("eth") -> Esto devolveria el precio del ethereum
+
+Builder.
+Nos permite construir objectos complejos paso a paso en vez de tener que llamar al constructor muchas veces.
+build lo que hace es devolvernos un objeto que hemos creado dentro del Builder.
+
+Ej- > StreamBuilder cadena = new StringBuilder("Hola");
+String telefonoNum = "345123456";
+cadena.append(" mi telefono es ").append(telefonoNum);
+
+Prototype.
+Tiene como objetivo clonarse a si mismo. El clon hereda todos los metodos y las propiedades
+
+ej -> public class Gomitas {
+    public String color;
+    public String sabor;
+
+    public Gomitas() {}
+
+    public Gomitas clonar(){
+        Gomitas clon = new Gomitas();
+        clon.color = color;
+        clon.sabor = sabor;
+
+        return clon;
+    }
+}
+
+En el main -> Gomitas gomita = new Gomitas();
+              gomita.color = rojo;
+              gomita.sabor = frutilla;
+              Gomitas gomitaClon = gomita.clonar();
+
+Decorator.
+Añade funcionalidad a una clase existente sin modificar dicha clase sobrecargando el metodo. Es como un metodo recursivo
+
+Ej -> GuitarraElectrica guitarraElectrica = new GuitarraElectrica(new GuitarraElectricaModelo(new GuitarraElectricaIdea)));
+
+    guitarraElectrica.sonar();
+
+Adaptader.
+Crea una clase que permite que clases con la misma implementacion y clases con distinta implementacion funcionen coherentemente
+Interactua entre la clase a adaptar y el interface, "clase envoltorio";
+
+Ej ->
+
+public interface ConsoleV2 {
+    boolean isRunning());
+    void runGame();
+    void exitGame();
+}
+
+public class MegaConsole implements ConsoleV2 {
+    boolean isRunning = false;
+
+    @Override
+    public void runGame() {
+        isRunning = true;
+    };
+
+    @Override
+    public void exitGame() {
+        isRunning = false;
+    };
+}
+
+public class OldConsole{
+    boolean isPlaying = false;
+
+    public void playTheGame() {
+        isPlaying = true;
+    }
+
+    public void exitOfGame() {
+        isRunning = false;
+    }
+}
+
+public class HardwareSupport implements ConsoleV2{
+    public OldConsole oldConsole = new OldConsole();
+
+    @Override
+      public void runGame() {
+          oldConsole.playTheGame();
+      };
+
+    @Override
+      public void exitGame() {
+          oldConsole.exitGame();
+      };
+}
+
+public class Main {
+    public static void main(String [] args) {
+        MegaConsole megaConsole = new MegaConsole();
+        HardwareSupport oldConsole = new HardwareSupport();
+
+        runGame(megaConsole);
+        runGame(oldConsole);
+    }
+
+    public static void runGame(ConsoleV2 consoleV2){
+        consoleV2.runGame();
+    }
+
+    public static void stopGame(ConsoleV2 consoleV2){
+            consoleV2.stopGame();
+        }
+}
+
+Facade.
+Es una clase envoltorio que simplifica algo complejo.
+
+Por ejemplo, queremos buscar el nombre de una ciudad destino en una pagina web de vuelos, y retorna el
+el nombre de la ciudad, la fecha, las paradas, el precio etc. Con una sola llamada a la función o metodo retornamos muchas cosas.
+
+Ej -> FlightsName flight= new FlightsName("Florida")
+
+System.out.println(flight) -> Florida, 30/12/2022, $500 usd, 1 parada,etc
